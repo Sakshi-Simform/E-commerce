@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 import type { SortContextType } from "@/types/product";
 
-const SortContext = createContext<SortContextType | undefined>(undefined);
+export const SortContext = createContext<SortContextType | undefined>(undefined);
 
 export const SortProvider = ({ children }: { children: ReactNode }) => {
   const [sort, setSort] = useState("");
@@ -11,12 +11,4 @@ export const SortProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </SortContext.Provider>
   );
-};
-
-export const useSort = (): SortContextType => {
-  const context = useContext(SortContext);
-  if (!context) {
-    throw new Error("useSort must be used within a SortProvider");
-  }
-  return context;
 };
