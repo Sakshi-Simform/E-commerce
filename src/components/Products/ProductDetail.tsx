@@ -35,7 +35,7 @@ export const ProductDetail = () => {
         {/* X Button */}
         <button
           onClick={() => navigate("/")}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold"
+          className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold cursor-pointer"
           aria-label="Close"
         >
           &times;

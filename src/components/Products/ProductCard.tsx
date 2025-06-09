@@ -14,6 +14,7 @@ export const ProductCard = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
+  const [isSearching , setIsSearching] = useState(false);
 
   const observer = useRef<IntersectionObserver | null>(null);
   const navigate = useNavigate();
@@ -43,26 +44,28 @@ export const ProductCard = () => {
   }, [page, loading, hasMore, debouncedSearchQuery]);
 
   useEffect(() => {
-    if (!debouncedSearchQuery) {
-      setProducts([]);
-      setPage(0);
-      setHasMore(true);
-      return;
-    }
-
-    setLoading(true);
-    setHasMore(false);
-
-    fetchAllProducts(1000, 0) 
-      .then(setProducts)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [debouncedSearchQuery]);
-
-  useEffect(() => {
     fetchMoreProducts();
-  }, [ ]);
-
+  }, []); 
+  
+  useEffect(() => {
+    if (debouncedSearchQuery.trim() === "") {
+      setIsSearching(false);
+      setHasMore(true);
+      setPage(0);
+    } else {
+      setIsSearching(true);
+      setLoading(true);
+      setHasMore(false);
+  
+      fetchAllProducts(1000, 0)
+        .then((res) => {
+          setProducts(res);
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false));
+    }
+  }, [debouncedSearchQuery]);
+  
   const lastProductRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (loading || !hasMore || debouncedSearchQuery) return;
@@ -99,7 +102,7 @@ export const ProductCard = () => {
 
   return (
     <div className="p-4 sm:p-6 min-h-screen">
-      {filteredProducts.length === 0 && !loading ? (
+      {filteredProducts.length === 0 && !loading && isSearching ? (
         <p className="text-center text-gray-500 text-lg mt-10">
           No products found for "{debouncedSearchQuery}"
         </p>
