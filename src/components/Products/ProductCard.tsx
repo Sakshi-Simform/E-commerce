@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "@/types/product";
-import { useSort } from "@/Context/SortContext";
-import { useSearch } from "@/Context/SearchContext";
+import { useSort } from "@/Hooks/useSort";
+import { useSearch } from "@/Hooks/useSearch";
 import { fetchAllProducts } from "@/api/ProductApi";
 import { useDebounce } from "@/Hooks/useDebounce";
 import "@/styles/ProductCard.css";

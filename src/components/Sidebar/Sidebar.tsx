@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import cartIcon from "@/assets/cart.png";
-import { useSort } from "@/Context/SortContext";
+import { useSort } from "@/Hooks/useSort";
 
 export const Sidebar = () => {
   const navigate = useNavigate();

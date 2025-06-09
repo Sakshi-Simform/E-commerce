@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { useSearch } from "@/Context/SearchContext";
+import { useSearch } from "@/Hooks/useSearch";
 
 export const Navbar = () => {
   const [showUserInfo, setShowUserInfo] = useState(false);
