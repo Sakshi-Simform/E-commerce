@@ -7,12 +7,13 @@ import { fetchAllProducts } from "@/api/ProductApi";
 import { useDebounce } from "@/Hooks/UseDebounce";
 import "@/styles/ProductCard.css";
 
+const LIMIT = 20;
+
 export const ProductCard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
-  const LIMIT = 20;
 
   const observer = useRef<IntersectionObserver | null>(null);
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ export const ProductCard = () => {
 
   const fetchMoreProducts = useCallback(async () => {
     if (loading || !hasMore) return;
+    setLoading(true);
     try {
-      setLoading(true);
       const newProducts = await fetchAllProducts(LIMIT, page * LIMIT);
       if (newProducts.length < LIMIT) setHasMore(false);
 
@@ -48,9 +49,13 @@ export const ProductCard = () => {
     (node: HTMLDivElement | null) => {
       if (loading || !hasMore) return;
       if (observer.current) observer.current.disconnect();
+
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) setPage((prev) => prev + 1);
+        if (entries[0].isIntersecting) {
+          setPage((prev) => prev + 1);
+        }
       });
+
       if (node) observer.current.observe(node);
     },
     [loading, hasMore]
@@ -82,9 +87,10 @@ export const ProductCard = () => {
             <div
               key={product.id}
               ref={isLast ? lastProductRef : null}
-              className="group perspective "
+              className="group perspective"
             >
               <div className="relative bg-white w-full h-80 duration-700 transform-style preserve-3d group-hover:rotate-y-180 transition-transform">
+                {/* Front */}
                 <div className="absolute w-full h-full backface-hidden rounded-xl shadow-lg p-4 bg-white text-black text-center">
                   <img
                     src={product.thumbnail}
@@ -92,26 +98,21 @@ export const ProductCard = () => {
                     className="w-full h-40 object-contain rounded mb-3"
                   />
                   <h3 className="text-lg font-bold mb-1">{product.title}</h3>
-                  <p className="text-sm text-black-300 mb-1">
-                    Price: ${product.price}
-                  </p>
-                  <p className="text-sm text-green-400">
-                    Discount: {product.discountPercentage}%
-                  </p>
+                  <p className="text-sm text-black-300 mb-1">Price: ${product.price}</p>
+                  <p className="text-sm text-green-400">Discount: {product.discountPercentage}%</p>
                 </div>
-                <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl shadow-lg p-4 bg-white-800 text-black text-center flex flex-col justify-center items-center">
-                  <h3 className="text-lg font-semibold mb-2">
-                    {product.title}
-                  </h3>
-                  <p className="text-sm text-black-300">{product.description}</p>
 
+                {/* Back */}
+                <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl shadow-lg p-4 bg-white text-black text-center flex flex-col justify-center items-center">
+                  <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
+                  <p className="text-sm text-black-300">{product.description}</p>
                   <div className="mt-4 flex items-center gap-3">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         navigate(`/productdetail/${product.id}`);
                       }}
-                      className="px-4 py-2 bg-blue-600 text-white flex item-center rounded hover:bg-blue-700 cursor-pointer"
+                      className="px-4 py-2 bg-blue-600 text-white flex items-center rounded hover:bg-blue-700 cursor-pointer"
                       aria-label="viewdetail-btn"
                     >
                       View Details
@@ -124,11 +125,11 @@ export const ProductCard = () => {
         })}
       </div>
 
-      {loading && (
-        <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-6 h-10">
+        {loading && (
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
