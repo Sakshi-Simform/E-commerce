@@ -61,7 +61,7 @@ export const ProductCard = () => {
 
   useEffect(() => {
     fetchMoreProducts();
-  }, [fetchMoreProducts]);
+  }, [ ]);
 
   const lastProductRef = useCallback(
     (node: HTMLDivElement | null) => {
