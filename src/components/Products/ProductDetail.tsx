@@ -30,8 +30,8 @@ export const ProductDetail = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-      <div className="relative p-8 max-w-3xl w-full bg-white text-black rounded-xl shadow-lg">
+    <div className="p-4 sm:p-6 min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+      <div className="relative w-full max-w-3xl bg-white text-black rounded-xl shadow-lg p-4 sm:p-8">
         {/* X Button */}
         <button
           onClick={() => navigate("/")}
@@ -42,20 +42,18 @@ export const ProductDetail = () => {
         </button>
 
         {/* Image */}
-        <div className="w-full flex justify-center items-center mb-6">
-          <div className="w-full max-w-md h-96 flex justify-center items-center rounded">
-            <img
-              src={product.thumbnail}
-              alt={product.title}
-              className="max-h-full max-w-full object-contain"
-            />
-          </div>
+        <div className="w-full h-64 sm:h-96 flex justify-center items-center mb-6 rounded overflow-hidden">
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+            className="max-h-full max-w-full object-contain"
+          />
         </div>
 
         {/* Product Info */}
         <div className="product-info transition-opacity duration-300 text-center">
-          <h2 className="text-3xl font-bold mb-4">{product.title}</h2>
-          <p className="text-gray-600 mb-4">{product.description}</p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">{product.title}</h2>
+          <p className="text-sm sm:text-base text-gray-600 mb-4">{product.description}</p>
           <p className="text-xl font-semibold text-green-600 mb-2">
             Discounted Price: ${discountedPrice(product.price, product.discountPercentage)}
           </p>
@@ -73,3 +71,4 @@ export const ProductDetail = () => {
     </div>
   );
 };
+
