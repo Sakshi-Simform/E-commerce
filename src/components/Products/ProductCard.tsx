@@ -22,13 +22,6 @@ export const ProductCard = () => {
 
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-  // Reset products & page when search query changes
-  useEffect(() => {
-    setProducts([]);
-    setPage(0);
-    setHasMore(true);
-  }, [debouncedSearchQuery]);
-
   const fetchMoreProducts = useCallback(async () => {
     if (loading || !hasMore || debouncedSearchQuery) return;
 
@@ -50,12 +43,30 @@ export const ProductCard = () => {
   }, [page, loading, hasMore, debouncedSearchQuery]);
 
   useEffect(() => {
+    if (!debouncedSearchQuery) {
+      setProducts([]);
+      setPage(0);
+      setHasMore(true);
+      return;
+    }
+
+    setLoading(true);
+    setHasMore(false);
+
+    fetchAllProducts(1000, 0) 
+      .then(setProducts)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [debouncedSearchQuery]);
+
+  useEffect(() => {
     fetchMoreProducts();
   }, [fetchMoreProducts]);
 
   const lastProductRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (loading || !hasMore || debouncedSearchQuery) return;
+
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
