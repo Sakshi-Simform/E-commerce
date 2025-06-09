@@ -112,6 +112,7 @@ export const ProductCard = () => {
                         navigate(`/productdetail/${product.id}`);
                       }}
                       className="px-4 py-2 bg-blue-600 text-white flex item-center rounded hover:bg-blue-700 cursor-pointer"
+                      aria-label="viewdetail-btn"
                     >
                       View Details
                     </button>
