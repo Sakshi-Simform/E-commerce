@@ -48,7 +48,8 @@ export const ProductCard = () => {
   }, []); 
   
   useEffect(() => {
-    if (debouncedSearchQuery.trim() === "") {
+    const trimQuery = debouncedSearchQuery.trim();
+    if (trimQuery === "") {
       setIsSearching(false);
       setHasMore(true);
       setPage(0);
@@ -92,13 +93,16 @@ export const ProductCard = () => {
     return sorted;
   }, [products, sort]);
 
+  const trimmedQuery = debouncedSearchQuery.trim().toLowerCase();
+
   const filteredProducts = useMemo(
     () =>
       sortedProducts.filter((product) =>
-        product.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+        product.title.toLowerCase().includes(trimmedQuery)
       ),
-    [sortedProducts, debouncedSearchQuery]
+    [sortedProducts, trimmedQuery]
   );
+  
 
   return (
     <div className="p-4 sm:p-6 min-h-screen">
