@@ -22,8 +22,16 @@ export const ProductCard = () => {
 
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
+  // Reset products & page when search query changes
+  useEffect(() => {
+    setProducts([]);
+    setPage(0);
+    setHasMore(true);
+  }, [debouncedSearchQuery]);
+
   const fetchMoreProducts = useCallback(async () => {
-    if (loading || !hasMore) return;
+    if (loading || !hasMore || debouncedSearchQuery) return;
+
     setLoading(true);
     try {
       const newProducts = await fetchAllProducts(LIMIT, page * LIMIT);
@@ -39,7 +47,7 @@ export const ProductCard = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, loading, hasMore]);
+  }, [page, loading, hasMore, debouncedSearchQuery]);
 
   useEffect(() => {
     fetchMoreProducts();
@@ -47,7 +55,7 @@ export const ProductCard = () => {
 
   const lastProductRef = useCallback(
     (node: HTMLDivElement | null) => {
-      if (loading || !hasMore) return;
+      if (loading || !hasMore || debouncedSearchQuery) return;
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
@@ -58,7 +66,7 @@ export const ProductCard = () => {
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore]
+    [loading, hasMore, debouncedSearchQuery]
   );
 
   const sortedProducts = useMemo(() => {
@@ -80,56 +88,66 @@ export const ProductCard = () => {
 
   return (
     <div className="p-4 sm:p-6 min-h-screen">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {filteredProducts.map((product, index) => {
-          const isLast = index === filteredProducts.length - 1;
-          return (
-            <div
-              key={product.id}
-              ref={isLast ? lastProductRef : null}
-              className="group perspective"
-            >
-              <div className="relative bg-white w-full h-72 sm:h-80 duration-700 transform-style preserve-3d group-hover:rotate-y-180 transition-transform rounded-xl shadow-lg">
-                {/* Front */}
-                <div className="absolute w-full h-full backface-hidden rounded-xl shadow-lg p-4 bg-white text-black text-center">
-                  <img
-                    src={product.thumbnail}
-                    alt={product.title}
-                    className="w-full h-36 sm:h-40 object-contain rounded mb-3"
-                  />
-                  <h3 className="text-base sm:text-lg font-bold mb-1">{product.title}</h3>
-                  <p className="text-xs sm:text-sm text-black-300 mb-1">Price: ${product.price}</p>
-                  <p className="text-xs sm:text-sm text-green-400">Discount: {product.discountPercentage}%</p>
-                </div>
+      {filteredProducts.length === 0 && !loading ? (
+        <p className="text-center text-gray-500 text-lg mt-10">
+          No products found for "{debouncedSearchQuery}"
+        </p>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {filteredProducts.map((product, index) => {
+              const isLast = index === filteredProducts.length - 1;
+              return (
+                <div
+                  key={product.id}
+                  ref={isLast ? lastProductRef : null}
+                  className="group perspective"
+                >
+                  <div className="relative bg-white w-full h-72 sm:h-80 duration-700 transform-style preserve-3d group-hover:rotate-y-180 transition-transform rounded-xl shadow-lg">
+                    {/* Front */}
+                    <div className="absolute w-full h-full backface-hidden rounded-xl shadow-lg p-4 bg-white text-black text-center">
+                      <img
+                        src={product.thumbnail}
+                        alt={product.title}
+                        className="w-full h-36 sm:h-40 object-contain rounded mb-3"
+                      />
+                      <h3 className="text-base sm:text-lg font-bold mb-1">{product.title}</h3>
+                      <p className="text-xs sm:text-sm text-black-300 mb-1">Price: ${product.price}</p>
+                      <p className="text-xs sm:text-sm text-green-400">
+                        Discount: {product.discountPercentage}%
+                      </p>
+                    </div>
 
-                {/* Back */}
-                <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl shadow-lg p-4 bg-white text-black text-center flex flex-col justify-center items-center">
-                  <h3 className="text-base sm:text-lg font-semibold mb-2">{product.title}</h3>
-                  <p className="text-xs sm:text-sm text-black-300">{product.description}</p>
-                  <div className="mt-4 flex items-center gap-3">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/productdetail/${product.id}`);
-                      }}
-                      className="px-3 sm:px-4 py-2 bg-blue-600 text-white flex items-center rounded hover:bg-blue-700 cursor-pointer text-xs sm:text-sm"
-                      aria-label="viewdetail-btn"
-                    >
-                      View Details
-                    </button>
+                    {/* Back */}
+                    <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl shadow-lg p-4 bg-white text-black text-center flex flex-col justify-center items-center">
+                      <h3 className="text-base sm:text-lg font-semibold mb-2">{product.title}</h3>
+                      <p className="text-xs sm:text-sm text-black-300">{product.description}</p>
+                      <div className="mt-4 flex items-center gap-3">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/productdetail/${product.id}`);
+                          }}
+                          className="px-3 sm:px-4 py-2 bg-blue-600 text-white flex items-center rounded hover:bg-blue-700 cursor-pointer text-xs sm:text-sm"
+                          aria-label="viewdetail-btn"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
 
-      <div className="flex justify-center mt-6 h-10">
-        {loading && (
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        )}
-      </div>
+          <div className="flex justify-center mt-6 h-10">
+            {loading && (
+              <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
