@@ -46,7 +46,7 @@ export const Navbar = () => {
             placeholder="Search..."
             className="flex-1 bg-transparent placeholder-gray-500 focus:outline-none"
           />
-          <button type="submit" className="ml-2 text-gray-600 hover:text-black transition-colors">
+          <button type="submit" className="ml-2 text-gray-600 hover:text-black transition-colors" aria-label="submit-btn">
           </button>
         </form>
 
