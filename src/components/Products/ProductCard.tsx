@@ -4,7 +4,7 @@ import type { Product } from "@/types/product";
 import { useSort } from "@/Context/SortContext";
 import { useSearch } from "@/Context/SearchContext";
 import { fetchAllProducts } from "@/api/ProductApi";
-import { useDebounce } from "@/Hooks/UseDebounce";
+import { useDebounce } from "@/Hooks/useDebounce";
 import "@/styles/ProductCard.css";
 
 const LIMIT = 20;
