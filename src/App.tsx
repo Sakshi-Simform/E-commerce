@@ -1,11 +1,22 @@
-import '@/styles/App.css'; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {ProductDetail} from "@/components/Products/ProductDetail";
+import { HomePage } from "@/components/Products/ProductList";
+import { SortProvider } from "@/Context/SortContext";
+import { SearchProvider } from "@/Context/SearchContext";
 
-function App() {
+const App = () => {
   return (
-    <div className="w-full min-h-[500px] h-screen bg-gradient-to-t from-[rgb(73,22,73)] to-black font-poppins">
-      <h1 className="text-white">Shopify</h1>
-    </div>
+    <Router>
+      <SearchProvider>
+        <SortProvider>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/productdetail/:id" element={<ProductDetail />} />
+          </Routes>
+        </SortProvider>
+      </SearchProvider>
+    </Router>
   );
-}
+};
 
 export default App;
