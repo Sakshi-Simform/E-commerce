@@ -9,7 +9,7 @@ export function Footer({ focusOnSearch }: FooterProp) {
 
   return (
     <footer
-      className="bg-black shadow-md border-t border-gray-700 text-white px-6 py-8 ml-64"
+      className="bg-black shadow-md border-t border-gray-700 text-white px-6 py-8 w-full z-100"
       role="contentinfo"
       aria-label="Footer"
     >
@@ -42,7 +42,7 @@ export function Footer({ focusOnSearch }: FooterProp) {
           <p className="font-semibold text-lg mb-2">Quick Links</p>
           <ul className="space-y-1 text-gray-400">
             {[
-              { label: "About Us", href: "#" },
+              { label: "About Us", href: "/" },
               { label: "Products", href: "#" },
               { label: "FAQ", href: "#" },
               { label: "Contact", href: "#" },
@@ -66,7 +66,7 @@ export function Footer({ focusOnSearch }: FooterProp) {
           <p id="contact-info" className="font-semibold text-lg mb-2">
             Contact Us
           </p>
-          <address className="not-italic space-y-1">
+          <address className="not-italic space-y-1 mb-3">
             <a
               href="mailto:support@smartbasket.com"
               className="hover:text-white block"
@@ -88,7 +88,7 @@ export function Footer({ focusOnSearch }: FooterProp) {
           &copy; {currentYear} SmartBasket. All rights reserved
         </div>
         <div className="flex gap-6 text-white text-lg cursor-pointer">
-          <a href="#" aria-label="Twitter" className="hover:text-blue-400 transition-colors">
+          <a href="/" aria-label="Twitter" className="hover:text-blue-400 transition-colors">
             <FaTwitter />
           </a>
           <a href="#" aria-label="Facebook" className="hover:text-blue-600 transition-colors">

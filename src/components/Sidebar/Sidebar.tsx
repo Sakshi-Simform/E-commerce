@@ -7,7 +7,6 @@ export const Sidebar = () => {
   const navigate = useNavigate();
   const { sort, setSort } = useSort();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState("");
 
   const categories = [
@@ -17,7 +16,6 @@ export const Sidebar = () => {
     "Beauty",
     "Electronics",
   ];
-  const brands = ["Nike", "Apple", "Samsung", "Zara", "H&M"];
   const genders = ["Male", "Female", "None"];
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -115,37 +113,6 @@ export const Sidebar = () => {
             ))}
           </div>
         </div>
-
-        {/* Brands */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Brands</h2>
-          <div className="space-y-2">
-            {brands.map((brand) => (
-              <label key={brand} className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  value={brand}
-                  checked={selectedBrands.includes(brand)}
-                  onChange={(e) =>
-                    handleCheckboxChange(e, setSelectedBrands, selectedBrands)
-                  }
-                  className="accent-yellow-500"
-                />
-                <span>{brand}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <button
-          onClick={() => console.log("Navigate to settings")}
-          className="w-full py-2 px-3 bg-black hover:bg-gray-800 rounded-lg text-white"
-          aria-label="setting-btn"
-        >
-          Settings
-        </button>
       </div>
     </div>
   );
