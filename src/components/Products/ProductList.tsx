@@ -23,4 +23,4 @@ export const HomePage = () => {
       <Footer focusOnSearch={focusOnSearch} />
     </div>
   );
-};
+}

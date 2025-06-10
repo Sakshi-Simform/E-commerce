@@ -88,4 +88,4 @@ export const ProductDetail = () => {
       </div>
     </div>
   );
-};
+}
