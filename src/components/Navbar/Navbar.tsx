@@ -19,7 +19,7 @@ export const Navbar = () => {
     }
   }, []);
 
-  const toggleUserInfo = () => setShowUserInfo((prev) => !prev);
+  // const toggleUserInfo = () => setShowUserInfo((prev) => !prev);
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
