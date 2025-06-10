@@ -141,7 +141,7 @@ export const Sidebar = () => {
       <div>
         <button
           onClick={() => console.log("Navigate to settings")}
-          className="w-full py-2 px-3 bg-white-800 hover:bg-gray-100 rounded-lg"
+          className="w-full py-2 px-3 bg-black hover:bg-gray-800 rounded-lg text-white"
           aria-label="setting-btn"
         >
           Settings

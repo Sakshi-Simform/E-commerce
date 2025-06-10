@@ -38,11 +38,12 @@ export const Navbar = () => {
           className="flex items-center bg-gray-100 text-gray-700 rounded-md px-4 py-2 w-64"
         >
           <input
+            id="search"
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search..."
-            className="flex-1 bg-transparent placeholder-gray-500 focus:outline-none"
+            className="flex-1 bg-transparent placeholder-gray-500 focus:ring-gray-300"
           />
           <button type="submit" className="ml-2 text-gray-600 hover:text-black transition-colors" aria-label="submit-btn">
           </button>
