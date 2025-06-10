@@ -1,10 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "@/api/ProductApi";
-import type { ProductResponse } from "@/types/product";
+import { fetchProducts , fetchProductById } from "@/api/ProductApi";
+import type { Product, ProductResponse } from "@/types/product";
 
 export const useFetchProducts = () => {
   return useQuery<ProductResponse, Error>({
     queryKey: ["products"],
     queryFn: fetchProducts,
+  });
+};
+
+export const useFetchProductById = (productId?: string) => {
+  return useQuery<Product, Error>({
+    queryKey: ["product", productId],
+    queryFn: () => fetchProductById(productId!)
   });
 };
