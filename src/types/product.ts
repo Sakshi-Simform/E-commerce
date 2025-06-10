@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export interface Product {
   id: number;
   title: string;
@@ -18,4 +20,21 @@ export interface SortContextType {
 export interface SearchContextType {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+}
+
+export interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+export interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export interface ProductResponse {
+  products: Array<Product>;
+  total: number;
+  skip: number;
+  limit: number;
 }
