@@ -35,7 +35,7 @@ export const Navbar = () => {
         {/* Search Bar */}
         <form
           onSubmit={handleSubmit}
-          className="flex items-center bg-gray-100 text-gray-700 rounded-md px-4 py-2 w-64"
+          className="flex items-center bg-gray-100 text-gray-700 rounded-md px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-300"
         >
           <input
             id="search"
@@ -43,16 +43,19 @@ export const Navbar = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search..."
-            className="flex-1 bg-transparent placeholder-gray-500 focus:ring-gray-300"
+            className="flex-1 bg-transparent placeholder-gray-500 outline-none"
           />
-          <button type="submit" className="ml-2 text-gray-600 hover:text-black transition-colors" aria-label="submit-btn">
-          </button>
+          <button
+            type="submit"
+            className="ml-2 text-gray-600 hover:text-black transition-colors"
+            aria-label="submit-btn"
+          ></button>
         </form>
 
         {/* User Icon & Dropdown */}
         <div className="relative">
           <FaUserCircle
-          
+
             className="text-3xl text-gray-800 cursor-pointer hover:text-gray-600 transition-colors"
             onClick={(e) => e.preventDefault()}
           />
