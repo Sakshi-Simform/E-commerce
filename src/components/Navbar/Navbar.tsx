@@ -53,8 +53,9 @@ export const Navbar = () => {
         {/* User Icon & Dropdown */}
         <div className="relative">
           <FaUserCircle
+          
             className="text-3xl text-gray-800 cursor-pointer hover:text-gray-600 transition-colors"
-            onClick={toggleUserInfo}
+            onClick={(e) => e.preventDefault()}
           />
           {showUserInfo && (
             <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-4 text-sm text-gray-800">
