@@ -1,27 +1,24 @@
-import axios from "axios";
-import type { Product } from "@/types/product";
 
-export const fetchAllProducts = async (
-  limit: number,
-  skip: number
-): Promise<Product[]> => {
-  try {
-    const res = await axios.get("https://dummyjson.com/products", {
-      params: { limit, skip },
-    });
-    return res.data.products;
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
-    throw new Error("Failed to fetch products");
+import type { Product, ProductResponse } from "@/types/product";
+
+export const fetchProducts = async (): Promise<ProductResponse> => {
+  const res = await fetch("https://dummyjson.com/products");
+
+  if (!res.ok) {
+    console.error("API error:", res.status, res.statusText);
+    throw new Error("Error occurred while fetching the Products.");
   }
+
+  const data = await res.json();
+  return data;
 };
 
 export const fetchProductById = async (id: string): Promise<Product> => {
-  try {
-    const res = await axios.get(`https://dummyjson.com/products/${id}`);
-    return res.data;
-  } catch (error) {
-    console.error("Product not found:", error);
-    throw new Error("Product not found");
+  const res = await fetch(`https://dummyjson.com/products/${id}`);
+
+  if (!res.ok) {
+    throw new Error(`Error fetching product ${id}: ${res.statusText}`);
   }
+
+  return res.json();
 };
