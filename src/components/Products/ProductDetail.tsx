@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import type { Product } from "@/types/product";
 import { fetchProductById } from "@/api/ProductApi";
 
@@ -23,47 +24,57 @@ export const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-black">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="p-4 sm:p-6 min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-      <div className="relative w-full max-w-3xl bg-white text-black rounded-xl shadow-lg p-4 sm:p-8">
-        {/* X Button */}
-        <button
-          onClick={() => navigate("/")}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl font-bold cursor-pointer"
-          aria-label="Close"
-        >
-          &times;
-        </button>
+    <div className="min-h-screen flex flex-col justify-start p-6 sm:p-10 bg-white text-black relative">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="flex items-center gap-2 text-blue-600 font-semibold  px-3 py-2 rounded w-max cursor-pointer"
+      >
+        <AiOutlineArrowLeft className="text-xl" />
+        Back
+      </button>
 
-        {/* Image */}
-        <div className="w-full h-64 sm:h-96 flex justify-center items-center mb-6 rounded overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-center items-start gap-8 w-full max-w-[1200px] mx-auto">
+
+        {/* Left: Image */}
+        <div className="w-full md:w-[550px] h-[400px] sm:h-[550px] md:h-[650px] flex justify-center items-center rounded-lg overflow-hidden bg-gray-100">
           <img
             src={product.thumbnail}
             alt={product.title}
-            className="max-h-full max-w-full object-contain"
+            className="w-full md:w-[550px] h-full sm:h-[550px] md:h-[650px] object-contain rounded-md"
           />
         </div>
 
-        {/* Product Info */}
-        <div className="product-info transition-opacity duration-300 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">{product.title}</h2>
-          <p className="text-sm sm:text-base text-gray-600 mb-4">{product.description}</p>
-          <p className="text-xl font-semibold text-green-600 mb-2">
-            Discounted Price: ${discountedPrice(product.price, product.discountPercentage)}
-          </p>
-          <p className="text-md text-gray-500 mb-1">
-            Original Price: <span className="line-through">${product.price}</span>
-          </p>
-          <p className="text-md text-blue-500 mb-2">
+        {/* Right: Product Info */}
+        <div className="flex flex-col justify-start pl-0 md:pl-5 w-full md:w-[55%]">
+          <h1 className="text-3xl font-bold mb-8">{product.title}</h1>
+          <p className="text-gray-700 mb-6 text-lg">{product.description}</p>
+          <div className="mb-6">
+            <span className="text-3xl text-green-600 font-semibold">
+              ${discountedPrice(product.price, product.discountPercentage)}
+            </span>
+            <span className="text-lg text-gray-500 line-through ml-4">
+              ${product.price}
+            </span>
+          </div>
+
+          <p className="text-lg sm:text-xl text-blue-600 mb-6 font-medium">
             Discount: {product.discountPercentage}%
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-lg sm:text-xl text-gray-500 mb-6">
+            Category: <span className="capitalize font-semibold">{product.category}</span>
+          </p>
+          <p className="text-lg sm:text-xl text-gray-500 mb-6 font-semibold">
+            Brand: {product.brand}
+          </p>
+          <p className="text-sm sm:text-xl text-gray-500 mb-6 font-semibold">
             Stock Available: {product.stock}
           </p>
         </div>
@@ -71,4 +82,3 @@ export const ProductDetail = () => {
     </div>
   );
 };
-

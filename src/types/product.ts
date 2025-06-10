@@ -6,6 +6,8 @@ export interface Product {
   discountPercentage: number;
   stock: number;
   thumbnail: string;
+  brand:string;
+  category:string;
 }
 
 export interface SortContextType {
