@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { useSearch } from "@/Hooks/useSearch";
 import { Link } from "react-router-dom";
+import { useSearch } from "@/Hooks/useSearch";
+import { supabase } from "@/supabase-client";
 
 interface NavbarProps {
   hideSearch?: boolean;
@@ -10,24 +11,13 @@ interface NavbarProps {
 
 export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
   const [showUserInfo, setShowUserInfo] = useState(false);
-  const [user, setUser] = useState({ username: "", email: "" });
 
   const { searchQuery, setSearchQuery } = useSearch();
 
-  useEffect(() => {
-    const stored = localStorage.getItem("currentUser");
-    if (stored) {
-      const storedUser = JSON.parse(stored);
-      setUser({
-        username: storedUser.name || "",
-        email: storedUser.email || "",
-      });
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("currentUser");
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setShowUserInfo(false);
+    window.location.href = "/sign-in";
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,8 +28,8 @@ export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
   return (
     <nav
       className={`${isDetailPage
-          ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
-          : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
+        ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
+        : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
         }`}
     >
       {isDetailPage && (
@@ -88,20 +78,14 @@ export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
         <div className="relative">
           <FaUserCircle
             className="text-3xl text-gray-800 cursor-pointer hover:text-gray-600 transition-colors"
-            onClick={(e) => e.preventDefault()}
+            onClick={() => setShowUserInfo((prev) => !prev)}
           />
           {showUserInfo && (
             <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-4 text-sm text-gray-800">
-              <p className="mb-2">
-                <span className="font-semibold">Username:</span> {user.username}
-              </p>
-              <p className="mb-4">
-                <span className="font-semibold">Email:</span> {user.email}
-              </p>
               <button
                 onClick={handleLogout}
-                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors"
-                aria-label="log-out btn"
+                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors cursor-pointer"
+                aria-label="logout-btn"
               >
                 Logout
               </button>
