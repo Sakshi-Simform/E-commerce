@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ProductDetail } from "@/components/Products/ProductDetail";
-import { HomePage } from "@/components/Products/ProductList";
+import { HomePage } from "./components/HomePage/HomePage";
 import { SortProvider } from "@/Context/SortContext";
 import { SearchProvider } from "@/Context/SearchContext";
 import {NotFound} from "@/components/Notfound/NotFound";
