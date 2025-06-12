@@ -53,28 +53,33 @@ export const ProductCard = () => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="group perspective cursor-pointer"
+              <div
+                key={product.id}
+                className="group perspective cursor-pointer"
                 onClick={() => navigate(`/productdetail/${product.id}`)}
               >
-                <div className="relative bg-white w-full h-72 sm:h-80 duration-700 transform-style preserve-3d group-hover:rotate-y-180 transition-transform rounded-xl shadow-lg">
+                <div className="relative bg-white w-full duration-700 transform-style preserve-3d group-hover:rotate-y-180 transition-transform rounded-xl shadow-lg min-h-[18rem] sm:min-h-[20rem]">
                   {/* Front */}
-                  <div className="absolute w-full h-full backface-hidden rounded-xl shadow-lg p-4 bg-white text-black text-center">
+                  <div className="absolute w-full h-full backface-hidden rounded-xl shadow-lg p-4 bg-white text-black text-center flex flex-col">
                     <img
                       src={product.thumbnail}
                       alt={product.title}
-                      className="w-full h-36 sm:h-40 object-contain rounded mb-3"
+                      className="w-full h-36 sm:h-40 object-contain rounded mb-3 flex-shrink-0"
                     />
-                    <h3 className="text-base sm:text-lg font-bold mb-1">{product.title}</h3>
-                    <p className="text-xs sm:text-sm text-black-300 mb-1">Price: ${product.price}</p>
-                    <p className="text-xs sm:text-sm text-green-400">
+                    <h3 className="text-base sm:text-lg font-bold mb-1 truncate">{product.title}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 mb-1 truncate">Price: ${product.price}</p>
+                    <p className="text-xs sm:text-sm text-green-600 truncate">
                       Discount: {product.discountPercentage}%
                     </p>
+                    <div className="flex-grow" />
                   </div>
 
                   {/* Back */}
-                  <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl shadow-lg p-4 bg-white text-black text-center flex flex-col justify-center items-center">
+                  <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl shadow-lg p-4 bg-white text-black text-center flex flex-col justify-center items-center overflow-auto">
                     <h3 className="text-base sm:text-lg font-semibold mb-2">{product.title}</h3>
-                    <p className="text-xs sm:text-sm text-black-300">{product.description}</p>
+                    <p className="text-xs sm:text-sm text-gray-500 overflow-auto max-h-[6rem] hide-scrollbar">
+                      {product.description}
+                    </p>
                     <div className="mt-4 flex items-center gap-3">
                       <button
                         onClick={(e) => {
@@ -90,6 +95,7 @@ export const ProductCard = () => {
                   </div>
                 </div>
               </div>
+
             ))}
           </div>
 
