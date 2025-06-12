@@ -55,7 +55,7 @@ export const ProductDetail = () => {
       <Navbar hideSearch isDetailPage />
       <main className="min-h-screen flex flex-col justify-start p-6 sm:p-10 bg-white text-black pt-24 pb-28 max-w-[1200px] mx-auto">
         <div className="flex flex-col md:flex-row justify-center items-start gap-8 w-full">
-          <div className="w-full md:w-[550px] h-[300px] sm:h-[450px] md:h-[500px] flex justify-center items-center rounded-lg overflow-hidden bg-gray-100 mt-22">
+          <div className="w-full md:w-[550px] h-[300px] sm:h-[450px] md:h-[500px] flex justify-center items-center rounded-lg overflow-hidden bg-gray-100 mt-20">
             <img
               src={product.thumbnail}
               alt={product.title}
