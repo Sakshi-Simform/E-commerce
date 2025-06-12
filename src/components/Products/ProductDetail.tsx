@@ -23,7 +23,7 @@ export const ProductDetail = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-white text-red-600 p-6">
         <h2 className="text-3xl font-bold mb-4">
-          {error.message || "Failed to load product"}
+          Sorry, we couldn't load the product details. Please try again later.
         </h2>
         <button
           onClick={() => navigate("/")}
@@ -35,6 +35,7 @@ export const ProductDetail = () => {
       </div>
     );
   }
+  
 
   if (!product) {
     return null;
