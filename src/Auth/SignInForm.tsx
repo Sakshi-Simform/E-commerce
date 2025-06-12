@@ -108,7 +108,7 @@ export const SignInForm = () => {
       <Button
         type="submit"
         disabled={!(formik.isValid && formik.dirty)}
-        className="mt-8 w-full bg-gradient-to-r from-green-400 to-teal-600 hover:from-blue-500 hover:to-indigo-500 text-white text-lg py-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mt-8 w-full bg-gradient-to-r from-green-400 to-teal-600 hover:from-green-500 hover:to-indigo-500 text-white text-lg py-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         Login Now
       </Button>
