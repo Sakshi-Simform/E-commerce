@@ -1,15 +1,17 @@
 import { FaTwitter, FaFacebookF, FaInstagram } from "react-icons/fa";
 
-export interface FooterProp {
+export interface FooterProps {
   focusOnSearch?: () => void;
+  isDetailPage?: boolean;
 }
 
-export function Footer({ focusOnSearch }: FooterProp) {
+export function Footer({ focusOnSearch, isDetailPage }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer
-      className="bg-black shadow-md border-t border-gray-700 text-white px-6 py-8 w-full z-100"
+      className={`bg-black shadow-md border-t border-gray-700 text-white px-6 py-6 w-full z-50 ${isDetailPage ? "fixed bottom-0 left-0 right-0" : "relative"
+        }`}
       role="contentinfo"
       aria-label="Footer"
     >

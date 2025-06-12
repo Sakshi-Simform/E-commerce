@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useSearch } from "@/Hooks/useSearch";
+import { Link } from "react-router-dom";
 
-export const Navbar = () => {
+interface NavbarProps {
+  hideSearch?: boolean;
+  isDetailPage?: boolean;
+}
+
+export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [user, setUser] = useState({ username: "", email: "" });
 
@@ -30,26 +36,53 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-20 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end">
+    <nav
+      className={`${isDetailPage
+          ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
+          : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
+        }`}
+    >
+      {isDetailPage && (
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-blue-600 font-semibold px-3 py-2 rounded cursor-pointer"
+          aria-label="Back to home"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back
+        </Link>
+      )}
+
       <div className="flex items-center gap-6">
-        {/* Search Bar */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex items-center bg-gray-100 text-gray-700 rounded-md px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-300">
-          <input
-            id="search"
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search..."
-            className="flex-1 bg-transparent placeholder-gray-500 outline-none"
-          />
-          <button
-            type="submit"
-            className="ml-2 text-gray-600 hover:text-black transition-colors"
-            aria-label="submit-btn">
-          </button>
-        </form>
+        {!hideSearch && !isDetailPage && (
+          <form
+            onSubmit={handleSubmit}
+            className="flex items-center bg-gray-100 text-gray-700 rounded-md px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-300"
+          >
+            <input
+              id="search"
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search..."
+              className="flex-1 bg-transparent placeholder-gray-500 outline-none"
+            />
+            <button
+              type="submit"
+              className="ml-2 text-gray-600 hover:text-black transition-colors"
+              aria-label="submit-btn"
+            />
+          </form>
+        )}
 
         {/* User Icon & Dropdown */}
         <div className="relative">
