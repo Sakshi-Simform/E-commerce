@@ -1,12 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ProductDetail } from "@/components/Products/ProductDetail";
-import { HomePage } from "./components/HomePage/HomePage";
 import { SortProvider } from "@/Context/SortContext";
 import { SearchProvider } from "@/Context/SearchContext";
-import {NotFound} from "@/components/Notfound/NotFound";
+import { routes } from "@/routes/routes";
 
 const queryClient = new QueryClient();
+
+const AppRoutes = () => {
+  return useRoutes(routes);
+};
 
 const App = () => {
   return (
@@ -14,11 +16,7 @@ const App = () => {
       <Router>
         <SearchProvider>
           <SortProvider>
-            <Routes>
-            <Route path="*" element={<NotFound />} />
-              <Route path="/" element={<HomePage />} />
-              <Route path="/productdetail/:id" element={<ProductDetail />} />
-            </Routes>
+            <AppRoutes />
           </SortProvider>
         </SearchProvider>
       </Router>
