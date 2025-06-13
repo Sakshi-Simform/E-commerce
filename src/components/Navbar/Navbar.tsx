@@ -5,11 +5,10 @@ import { useSearch } from "@/Hooks/useSearch";
 import { supabase } from "@/supabase-client";
 
 interface NavbarProps {
-  hideSearch?: boolean;
   isDetailPage?: boolean;
 }
 
-export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
+export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
   const [showUserInfo, setShowUserInfo] = useState(false);
 
   const { searchQuery, setSearchQuery } = useSearch();
@@ -28,8 +27,8 @@ export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
   return (
     <nav
       className={`${isDetailPage
-        ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
-        : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
+          ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
+          : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
         }`}
     >
       {isDetailPage && (
@@ -53,7 +52,8 @@ export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
       )}
 
       <div className="flex items-center gap-6">
-        {!hideSearch && !isDetailPage && (
+        {/* Show search bar only if NOT detail page */}
+        {!isDetailPage && (
           <form
             onSubmit={handleSubmit}
             className="flex items-center bg-gray-100 text-gray-700 rounded-md px-4 py-2 w-64 focus-within:ring-2 focus-within:ring-gray-300"
@@ -70,7 +70,8 @@ export const Navbar = ({ hideSearch, isDetailPage }: NavbarProps) => {
               type="submit"
               className="ml-2 text-gray-600 hover:text-black transition-colors"
               aria-label="submit-btn"
-            />
+            >
+            </button>
           </form>
         )}
 
