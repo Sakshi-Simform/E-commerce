@@ -182,45 +182,48 @@ export const SignUpForm = () => {
       </div>
 
       {/* Age & Gender */}
-      <div className="flex gap-6 mb-6">
-        <div className="flex-1">
-          <Label htmlFor="age" className="block mb-1 text-gray-700 font-medium">
+      <div className="flex gap-3">
+        <div className="space-y-3 w-full">
+          <Label htmlFor="age" className="text-gray-700">
             Age <span className="text-red-700">*</span>
           </Label>
           <Input
             name="age"
-            id="age"
-            type="number"
             placeholder="Enter your Age"
-            className="h-11 w-full"
+            id="age"
+            className="h-10"
+            type="number"
             value={formik.values.age}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
           {formik.touched.age && formik.errors.age && (
-            <p className="mt-1 text-sm text-red-600">{formik.errors.age}</p>
+            <p className="text-red-600 text-sm">{formik.errors.age}</p>
           )}
         </div>
-        <div className="flex-1">
-          <Label htmlFor="gender" className="block mb-1 text-gray-700 font-medium">
+        <div className="space-y-3 w-full">
+          <Label htmlFor="gender" className="text-gray-700">
             Gender <span className="text-red-700">*</span>
           </Label>
           <Select
-  name="gender"
-  value={formik.values.gender}
-  onValueChange={(value) => formik.setFieldValue("gender", value as Gender)}
->
-  <SelectTrigger id="gender" className="w-full h-11">
-    <SelectValue placeholder="Select Gender" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="male">Male</SelectItem>
-    <SelectItem value="female">Female</SelectItem>
-    <SelectItem value="other">Other</SelectItem>
-  </SelectContent>
-</Select>
+            name="gender"
+            value={formik.values.gender}
+            onValueChange={(value) =>
+              formik.setFieldValue("gender", value as Gender)
+            }
+          >
+            <SelectTrigger id="gender" className="w-full py-[18.5px]">
+              <SelectValue placeholder="Gender" />
+            </SelectTrigger>
+            <SelectContent className="bg-white shadow-lg rounded-md z-50">
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+
+          </Select>
           {formik.touched.gender && formik.errors.gender && (
-            <p className="mt-1 text-sm text-red-600">{formik.errors.gender}</p>
+            <p className="text-red-600 text-sm">{formik.errors.gender}</p>
           )}
         </div>
       </div>
@@ -276,10 +279,9 @@ export const SignUpForm = () => {
                 {date ? format(date, "PPP") : "Select Your Birth Date"}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent className="w-auto p-0 bg-white shadow-lg rounded-md z-50" align="start">
               <Calendar
                 mode="single"
-                initialFocus
                 selected={date}
                 onSelect={(date) => {
                   setDate(date);
@@ -310,37 +312,33 @@ export const SignUpForm = () => {
         </div>
       </div>
 
-     {/* Confirm Password */}
-{/* Confirm Password */}
-<div className="w-1/2 pr-2 space-y-3 mb-5">
-            <Label htmlFor="confirmPassword" className="text-gray-700">
-              Confirm Password <span className="text-red-700">*</span>
-            </Label>
-            <Input
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              id="confirm-password"
-              type="password"
-              className="h-10 text-gray-700 cursor-pointer"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword && (
-                <p className="text-red-600 text-sm">
-                  {formik.errors.confirmPassword}
-                </p>
-              )}
-          </div>
-
-          
-
+      {/* Confirm Password */}
+      <div className="w-1/2 pr-2 space-y-3 mb-5">
+        <Label htmlFor="confirmPassword" className="text-gray-700">
+          Confirm Password <span className="text-red-700">*</span>
+        </Label>
+        <Input
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          id="confirm-password"
+          type="password"
+          className="h-10 text-gray-700 cursor-pointer"
+          value={formik.values.confirmPassword}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.confirmPassword &&
+          formik.errors.confirmPassword && (
+            <p className="text-red-600 text-sm">
+              {formik.errors.confirmPassword}
+            </p>
+          )}
+      </div>
       {/* Submit Button */}
       <div className="mb-4">
         <Button
           type="submit"
-          className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-green-400 to-teal-600 hover:bg-blue-900 disabled:bg-blue-400"
+          className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-green-400 to-teal-600 hover:bg-blue-900 disabled:bg-blue-400 cursor-pointer"
           disabled={!(formik.isValid && formik.dirty)}
         >
           Create Account
