@@ -3,12 +3,13 @@ import type { SupabaseSession } from "@/types/supabase.type";
 import { Loader } from "@/components/Loader/Loader";
 
 interface PrivateRouteProps {
-  session: SupabaseSession | null | undefined;
+  session: SupabaseSession | null;
   children: React.ReactNode;
+  loading:boolean;
 }
 
-const PrivateRoute = ({ session, children }: PrivateRouteProps) => {
-  if (session === undefined) {
+const PrivateRoute = ({ loading , session, children }: PrivateRouteProps) => {
+  if (loading) {
     return <Loader />; 
   }
 

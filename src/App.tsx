@@ -29,7 +29,9 @@ const App = () => {
     };
   }, []);
 
-  if (session === undefined) {
+  const loading = session === undefined;
+
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <p>Loading...</p>
@@ -41,7 +43,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <SearchProvider>
         <SortProvider>
-          <RouterProvider router={routerWithSession(session)} />
+          <RouterProvider router={routerWithSession(session, loading)} />
         </SortProvider>
       </SearchProvider>
     </QueryClientProvider>
