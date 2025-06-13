@@ -1,5 +1,6 @@
-import { Navigate } from "react-router-dom"; 
+import { Navigate } from "react-router-dom";
 import type { SupabaseSession } from "@/types/supabase.type";
+import { Loader } from "@/components/Loader/Loader";
 
 interface PrivateRouteProps {
   session: SupabaseSession | null | undefined;
@@ -8,11 +9,13 @@ interface PrivateRouteProps {
 
 const PrivateRoute = ({ session, children }: PrivateRouteProps) => {
   if (session === undefined) {
-    return <div>Loading session...</div>;
+    return <Loader />; 
   }
+
   if (!session) {
     return <Navigate to="/sign-in" replace />;
   }
+
   return <>{children}</>;
 };
 
