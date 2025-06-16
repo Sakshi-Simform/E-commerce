@@ -13,7 +13,7 @@ export const ProductInfo = ({
 }: ProductInfoProps) => {
     return (
         <div className="flex flex-col gap-6 w-full md:w-[55%]">
-            <h2 className="text-4xl font-bold">{title}</h2>
+            <h2 className="text-4xl font-bold mt-3">{title}</h2>
             <p className="text-gray-700 text-lg">{description}</p>
 
             <div className="text-3xl font-semibold flex items-center gap-3">
@@ -24,13 +24,13 @@ export const ProductInfo = ({
                 </span>
             </div>
 
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-lg mb-3">
                 Brand: <span className="font-semibold">{brand}</span>
             </p>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-lg mb-3">
                 Category: <span className="font-semibold">{category}</span>
             </p>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-lg mb-3">
                 Stock available: <span className="font-semibold">{stock}</span>
             </p>
         </div>

@@ -19,7 +19,7 @@ const Layout = () => {
         {!isDetailPage && <Sidebar />}
         <div className={`${!isDetailPage ? "ml-20" : ""} flex-1`}>
           <Navbar isDetailPage={isDetailPage} />
-          <main className="pl-50 pt-18 bg-white min-h-[70vh] text-black">
+          <main className={`pt-18 bg-white min-h-[10vh] text-black ${!isDetailPage ? "pl-20" : "px-4 sm:px-6 lg:px-8"}`}>
             <Outlet />
           </main>
         </div>

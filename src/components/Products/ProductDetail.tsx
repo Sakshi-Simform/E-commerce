@@ -14,22 +14,27 @@ export const ProductDetail = () => {
   if (!product) return null;
 
   return (
-    <main className="min-h-screen bg-white p-6 sm:p-10 text-black pb-28 flex items-start justify-center pt-10">
-      <div className="flex flex-col md:flex-row justify-center items-start gap-12 w-full max-w-6xl">
-        <ProductImageWithSpinner
-          thumbnail={product.thumbnail}
-          title={product.title}
-          isLoading={isLoading}
-        />
-        <ProductInfo
-          title={product.title}
-          description={product.description}
-          price={product.price}
-          discountPercentage={product.discountPercentage}
-          brand={product.brand}
-          category={product.category}
-          stock={product.stock}
-        />
+    <main className="min-h-screen py-10 mt-20">
+
+      <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div className="bg-white  rounded-2xl p-6 space-y-8">
+          <div className="flex flex-col lg:flex-row gap-15 items-start">
+            <ProductImageWithSpinner
+              thumbnail={product.thumbnail}
+              title={product.title}
+              isLoading={isLoading}
+            />
+            <ProductInfo
+              title={product.title}
+              description={product.description}
+              price={product.price}
+              discountPercentage={product.discountPercentage}
+              brand={product.brand}
+              category={product.category}
+              stock={product.stock}
+            />
+          </div>
+        </div>
       </div>
     </main>
   );
