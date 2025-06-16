@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSearch } from "@/Hooks/useSearch";
@@ -10,8 +10,25 @@ interface NavbarProps {
 
 export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
   const [showUserInfo, setShowUserInfo] = useState(false);
-
+  const [user, setUser] = useState<{ email: string }>({ email: "" });
   const { searchQuery, setSearchQuery } = useSearch();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Error fetching user:", error.message);
+        return;
+      }
+      if (data?.user) {
+        setUser({
+          email: data.user.email || "",
+        });
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -27,8 +44,8 @@ export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
   return (
     <nav
       className={`${isDetailPage
-          ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
-          : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
+        ? "fixed top-0 left-0 right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-between"
+        : "relative right-0 z-40 bg-white shadow-md h-20 px-8 flex items-center justify-end"
         }`}
     >
       {isDetailPage && (
@@ -83,10 +100,12 @@ export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
           />
           {showUserInfo && (
             <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-4 text-sm text-gray-800">
+              <p className="mb-4">
+                <span className="font-semibold">Email:</span> {user.email}
+              </p>
               <button
                 onClick={handleLogout}
-                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors cursor-pointer"
-                aria-label="logout-btn"
+                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors"
               >
                 Logout
               </button>
