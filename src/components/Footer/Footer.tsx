@@ -10,7 +10,7 @@ export function Footer({ focusOnSearch, isDetailPage }: FooterProps) {
 
   return (
     <footer
-      className={`bg-black shadow-md border-t border-gray-700 text-white px-6 py-6 w-full z-50 ${isDetailPage ? "fixed bottom-0 left-0 right-0" : "relative"
+      className={`bg-black shadow-md border-t border-gray-700 text-white px-6 py-6 w-full z-50 ${isDetailPage ? "relative" : "relative"
         }`}
       role="contentinfo"
       aria-label="Footer"
@@ -21,7 +21,7 @@ export function Footer({ focusOnSearch, isDetailPage }: FooterProps) {
           <p className="text-3xl font-bold" role="heading" aria-level={1}>
             SmartBasket
           </p>
-          {focusOnSearch && (
+          {focusOnSearch && !isDetailPage && (
             <button
               onClick={focusOnSearch}
               className="text-gray-400 text-lg hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
