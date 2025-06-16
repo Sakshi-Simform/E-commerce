@@ -3,21 +3,32 @@ import cartIcon from "@/assets/cart.png";
 import { useSort } from "@/Hooks/useSort";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
+enum SortOption {
+  NONE = "",
+  PRICE_ASC = "price-asc",
+  PRICE_DESC = "price-desc",
+  NAME_ASC = "name-asc",
+  NAME_DESC = "name-desc",
+}
+
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: SortOption.NONE, label: "-- No Sorting --" },
+  { value: SortOption.PRICE_ASC, label: "Price: Low to High" },
+  { value: SortOption.PRICE_DESC, label: "Price: High to Low" },
+  { value: SortOption.NAME_ASC, label: "Name: A - Z" },
+  { value: SortOption.NAME_DESC, label: "Name: Z - A" },
+];
+
 export const Sidebar = () => {
   const navigate = useNavigate();
   const { sort, setSort } = useSort();
 
-  const handleSort = (value: string) => {
+  const handleSort = (value: SortOption) => {
     setSort(value);
   };
 
   const sortLabel =
-    {
-      "price-asc": "Price: Low to High",
-      "price-desc": "Price: High to Low",
-      "name-asc": "Name: A - Z",
-      "name-desc": "Name: Z - A",
-    }[sort] || "-- Sort --";
+    SORT_OPTIONS.find((option) => option.value === sort)?.label || "-- Sort --";
 
   return (
     <div className="w-64 bg-white text-black h-screen flex flex-col justify-between fixed top-0 left-0 z-50 px-8 py-5 shadow-lg">
@@ -45,21 +56,11 @@ export const Sidebar = () => {
               className="bg-white border rounded p-2 w-full"
               sideOffset={5}
             >
-              <DropdownMenu.Item onSelect={() => handleSort("")}>
-                -- No Sorting --
-              </DropdownMenu.Item>
-              <DropdownMenu.Item onSelect={() => handleSort("price-asc")}>
-                Price: Low to High
-              </DropdownMenu.Item>
-              <DropdownMenu.Item onSelect={() => handleSort("price-desc")}>
-                Price: High to Low
-              </DropdownMenu.Item>
-              <DropdownMenu.Item onSelect={() => handleSort("name-asc")}>
-                Name: A - Z
-              </DropdownMenu.Item>
-              <DropdownMenu.Item onSelect={() => handleSort("name-desc")}>
-                Name: Z - A
-              </DropdownMenu.Item>
+              {SORT_OPTIONS.map(({ value, label }) => (
+                <DropdownMenu.Item key={value} onSelect={() => handleSort(value)}>
+                  {label}
+                </DropdownMenu.Item>
+              ))}
             </DropdownMenu.Content>
           </DropdownMenu.Root>
         </div>
