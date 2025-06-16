@@ -36,7 +36,7 @@ export const ProductCard = () => {
   }, [sortedProducts, trimmedQuery]);
 
   return (
-    <div className="p-4 sm:p-6 min-h-screen">
+    <div className="p-4 sm:p-6 min-h-screen ml-0 md:ml-20">
       {error && (
         <p className="text-center text-red-500 text-lg mt-10">
           Error loading products: {error.message}

@@ -1,93 +1,41 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { useParams } from "react-router-dom";
 import { useFetchProductById } from "@/Hooks/useFetch";
-import { Navbar } from "@/components/Navbar/Navbar";
-import { Footer } from "@/components/Footer/Footer";
+import { NotFound } from "../Notfound/NotFound";
+import { ProductImageWithSpinner } from "./ProductItem";
+import { ProductInfo } from "@/components/Products/ProductInfo";
 
 export const ProductDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const { data: product, error, isLoading } = useFetchProductById(id);
 
-  const discountedPrice = (price: number, discount: number) =>
-    (price - (price * discount) / 100).toFixed(2);
+  if (error) return <NotFound />;
 
-  if (isLoading) {
-    return (
-      <>
-        <Navbar hideSearch isDetailPage />
-        <div className="flex items-center justify-center min-h-screen bg-white pt-20 pb-28">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-        <Footer isDetailPage />
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        <Navbar hideSearch isDetailPage />
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white text-red-600 p-6 pt-20 pb-28">
-          <h2 className="text-3xl font-bold mb-4">
-            Sorry, we couldn't load the product details. Please try again later.
-          </h2>
-          <button
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-blue-600 font-semibold px-3 py-2 rounded cursor-pointer"
-          >
-            <AiOutlineArrowLeft className="text-xl" />
-            Back to Home
-          </button>
-        </div>
-        <Footer isDetailPage />
-      </>
-    );
-  }
-
-  if (!product) {
-    return null;
-  }
+  if (!product) return null;
 
   return (
-    <>
-      <Navbar hideSearch isDetailPage />
-      <main className="min-h-screen flex flex-col justify-start p-6 sm:p-10 bg-white text-black pt-24 pb-28 max-w-[1200px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-center items-start gap-8 w-full">
-          <div className="w-full md:w-[550px] h-[300px] sm:h-[450px] md:h-[500px] flex justify-center items-center rounded-lg overflow-hidden bg-gray-100 mt-20">
-            <img
-              src={product.thumbnail}
-              alt={product.title}
-              className="max-w-full max-h-full object-contain"
+    <main className="min-h-screen py-10 mt-20">
+
+      <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div className="bg-white  rounded-2xl p-6 space-y-8">
+          <div className="flex flex-col lg:flex-row gap-15 items-start">
+            <ProductImageWithSpinner
+              thumbnail={product.thumbnail}
+              title={product.title}
+              isLoading={isLoading}
+            />
+            <ProductInfo
+              title={product.title}
+              description={product.description}
+              price={product.price}
+              discountPercentage={product.discountPercentage}
+              brand={product.brand}
+              category={product.category}
+              stock={product.stock}
             />
           </div>
-          <div className="flex flex-col gap-6 w-full md:w-[55%] ">
-            <h2 className="text-3xl font-bold mt-26">{product.title}</h2>
-            <p className="text-gray-700">{product.description}</p>
-
-            <div className="text-2xl font-semibold flex items-center gap-2">
-              <span className="line-through text-gray-400">${product.price}</span>
-              <span>${discountedPrice(product.price, product.discountPercentage)}</span>
-              <span className="text-sm text-green-600 font-medium">
-                -{product.discountPercentage}%
-              </span>
-            </div>
-
-            <p className="text-gray-600">
-              Brand: <span className="font-semibold">{product.brand}</span>
-            </p>
-            <p className="text-gray-600">
-              Category: <span className="font-semibold">{product.category}</span>
-            </p>
-            <p className="text-gray-600">
-              Stock available: <span className="font-semibold">{product.stock}</span>
-            </p>
-          </div>
         </div>
-      </main>
-
-      <Footer isDetailPage />
-    </>
+      </div>
+    </main>
   );
 };

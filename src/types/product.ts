@@ -24,6 +24,22 @@ export interface ProductResponse {
   limit: number;
 }
 
+export interface ProductImage  {
+  thumbnail: string;
+  title: string;
+  isLoading: boolean;
+};
+
+export interface ProductInfoProps  {
+  title: string;
+  description: string;
+  price: number;
+  discountPercentage: number;
+  brand: string;
+  category: string;
+  stock: number;
+};
+
 {/* Context */}
 export interface SortContextType {
   sort: string;
