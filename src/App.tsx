@@ -1,35 +1,23 @@
 import { useEffect, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
-import { supabase } from "@/supabase-client";
+import { routerWithSession } from "@/routes/routes";
+import { checkAuth } from "@/utils/authValidation";
+import { useSession } from "@/Hooks/useSession";
 import { SortProvider } from "@/Context/SortContext";
 import { SearchProvider } from "@/Context/SearchContext";
-import { routerWithSession } from "@/routes/routes";
-import type { SupabaseSession } from "@/types/supabase.type";
-
-const queryClient = new QueryClient();
 
 const App = () => {
-  const [session, setSession] = useState<SupabaseSession | null | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const { session, setSession } = useSession();
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session ?? null);
-    };
-
-    getSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const loading = session === undefined;
+    async function validate() {
+      const token = await checkAuth();
+      setSession(token);
+      setLoading(false);
+    }
+    validate();
+  }, [setSession]);
 
   if (loading) {
     return (
@@ -39,14 +27,15 @@ const App = () => {
     );
   }
 
+  const router = routerWithSession(session, loading);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <SearchProvider>
-        <SortProvider>
-          <RouterProvider router={routerWithSession(session, loading)} />
-        </SortProvider>
-      </SearchProvider>
-    </QueryClientProvider>
+    <SearchProvider>
+      <SortProvider>
+        <RouterProvider router={router} />
+      </SortProvider>
+    </SearchProvider>
+
   );
 };
 
