@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { useFormik } from "formik";
 import * as Yup from "yup";
+import type { User } from "@/types/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { User } from "@/types/user";
-import { supabase } from "@/supabase-client";
-import { useFormik } from "formik";
+import { useSigninUser } from "@/Hooks/useSigninUser";
 
 export const SignInForm = () => {
   const [authError, setAuthError] = useState<string | null>(null);
+  const { mutate: signInUser, error, isError, isPending } = useSigninUser();
 
   const loginUser = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -24,30 +25,33 @@ export const SignInForm = () => {
     validationSchema: loginUser,
     validateOnChange: true,
     validateOnBlur: true,
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       setAuthError(null);
-      try {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: values.email,
-          password: values.password,
-        });
-
-        if (error) {
-          if (error.message.includes("Invalid login credentials")) {
-            setAuthError("Invalid email or password");
-          } else if (error.message.includes("Email not confirmed")) {
-            setAuthError("Please verify your email first");
-          } else {
-            setAuthError("An error occurred during login");
-          }
-          return;
-        }
-      } catch (error) {
-        setAuthError("An unexpected error occurred");
-        console.error(error);
-      }
+      signInUser(values);
     },
   });
+
+  useEffect(() => {
+    if (isError && error) {
+      setAuthError(error.message);
+    }
+  }, [isError, error]);
+
+  if (isPending) {
+    return (
+      <div className="flex flex-col items-center min-h-[80vh] justify-center">
+        <div className="mb-8 relative">
+          <div
+            className="w-10 h-10 border-4 border-t-[#] border-r-[#0792dd]/30 border-b-[#0792dd]/10 border-l-[#0792dd]/70 rounded-full animate-spin relative z-10"
+            role="status"
+            aria-label="Loading"
+          />
+          <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-14 h-4 bg-gradient-to-t from-transparent to-[rgba(219,68,68,0.1)] blur-sm"></div>
+        </div>
+        <p className="text-xl text-gray-600 mt-4 font-medium">Signin...</p>
+      </div>
+    );
+  }
 
   return (
     <form
