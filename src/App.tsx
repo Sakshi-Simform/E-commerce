@@ -32,7 +32,6 @@ const App = () => {
   return (
     <SearchProvider>
       <SortProvider>
-
         <RouterProvider router={router} />
       </SortProvider>
     </SearchProvider>
