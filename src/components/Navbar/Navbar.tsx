@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useSession } from "@/Hooks/useSession";
+import { clearTokens } from "@/utils/localStorageService";
 import { useSearch } from "@/Hooks/useSearch";
-import { supabase } from "@/supabase-client";
 
 interface NavbarProps {
   isDetailPage?: boolean;
@@ -10,28 +11,12 @@ interface NavbarProps {
 
 export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
   const [showUserInfo, setShowUserInfo] = useState(false);
-  const [user, setUser] = useState<{ email: string }>({ email: "" });
   const { searchQuery, setSearchQuery } = useSearch();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (error) {
-        console.error("Error fetching user:", error.message);
-        return;
-      }
-      if (data?.user) {
-        setUser({
-          email: data.user.email || "",
-        });
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const { setSession } = useSession();
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    clearTokens();
+    setSession(null);
     setShowUserInfo(false);
     window.location.href = "/sign-in";
   };
@@ -69,7 +54,6 @@ export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
       )}
 
       <div className="flex items-center gap-6">
-        {/* Show search bar only if NOT detail page */}
         {!isDetailPage && (
           <form
             onSubmit={handleSubmit}
@@ -92,7 +76,6 @@ export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
           </form>
         )}
 
-        {/* User Icon & Dropdown */}
         <div className="relative">
           <FaUserCircle
             className="text-3xl text-gray-800 cursor-pointer hover:text-gray-600 transition-colors"
@@ -100,9 +83,9 @@ export const Navbar = ({ isDetailPage = false }: NavbarProps) => {
           />
           {showUserInfo && (
             <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-md shadow-lg z-50 p-4 text-sm text-gray-800">
-              <p className="mb-4">
-                <span className="font-semibold">Email:</span> {user.email}
-              </p>
+              {/* <p className="mb-4">
+                <span className="font-semibold">Email:</span> {session?.user?.email ?? "N/A"}
+              </p> */}
               <button
                 onClick={handleLogout}
                 className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition-colors"
